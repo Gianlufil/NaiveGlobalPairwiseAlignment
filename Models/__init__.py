@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from turtledemo.penrose import dart
 
 __author__ = 'gianlucafilippone'
 

@@ -6,14 +6,12 @@ import Models;
 
 def importScoreMatrix(filename):
 
-    #Import file
     input_file = open(filename, 'r')
     lines = input_file.read().splitlines()
     input_file.close()
 
     symbolsMap = {}
 
-    #Select the first row and assign to each symbol an index to be used into the substitution matrix
     for index, symbol in enumerate(lines.pop(0)):
         symbolsMap[symbol] = index
 
@@ -22,7 +20,7 @@ def importScoreMatrix(filename):
 
     for rowIndex, line in enumerate(lines):
         for colIndex, number in enumerate(line):
-            matrix[rowIndex][colIndex] = number
+            matrix[rowIndex][colIndex] = int(number)
 
     return Models.ScoreMatrix(matrix, symbolsMap)
 
