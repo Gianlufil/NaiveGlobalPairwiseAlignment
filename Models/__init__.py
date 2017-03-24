@@ -54,9 +54,8 @@ class AlignmentAlgoResult:
 
 class AlgorithmMetrics:
 
-    def __init__(self, bestAlignmentTime, totalTime, alignmentsTested, improvements, iterations):
+    def __init__(self, bestAlignmentTime, totalTime, alignmentsTested, iterations):
         self.bestAlignmentTime = bestAlignmentTime
         self.totalTime = totalTime
         self.alignmentsTested = alignmentsTested
-        self.improvements = improvements
         self.iterations = iterations

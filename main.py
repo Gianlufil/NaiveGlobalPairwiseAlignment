@@ -48,7 +48,6 @@ def globalPairwiseAlignmentAlgorithm(scoreMatrix, database, inputString):
 
     bestAlignmentTime = 0
     alignmentTested = 0
-    improvementsFound = 0
     iterationsDone = 0
 
     iterator = database.iterator()
@@ -70,7 +69,6 @@ def globalPairwiseAlignmentAlgorithm(scoreMatrix, database, inputString):
                 bestString = comparingString
                 shiftValue = currentShiftValue
                 bestScore = currentScore
-                improvementsFound += 1
                 found_better_alignment = True
 
         alignment_end_time = time.time()
@@ -82,7 +80,7 @@ def globalPairwiseAlignmentAlgorithm(scoreMatrix, database, inputString):
 
     algorithm_time = algorithm_end_time - algorithm_start_time
 
-    metrics = Models.AlgorithmMetrics(bestAlignmentTime, algorithm_time, alignmentTested, improvementsFound, iterationsDone)
+    metrics = Models.AlgorithmMetrics(bestAlignmentTime, algorithm_time, alignmentTested, iterationsDone)
     results = Models.AlignmentAlgoResult(inputString, bestString, shiftValue, bestScore, metrics)
 
     return results
@@ -92,23 +90,42 @@ def globalPairwiseAlignmentAlgorithm(scoreMatrix, database, inputString):
 #                 Program                   #
 #############################################
 
-strings_filename = "datasets/input_string.txt"
+output_filename = "output.txt"
+string_filename = "datasets/input_string.txt"
 matrix_filename = "datasets/score_matrix.txt"
-database_filename = "datasets/databases/database_201.txt"
+database_basename = "datasets/databases/database_"
+database_extension = ".txt"
 
-scoreMatrix = Utils.importScoreMatrix(matrix_filename)
-database = Utils.importDatabase(database_filename)
-inputString = Utils.importString(strings_filename)
+size=input("Select database size: ")
+
+database_filename = database_basename + size + database_extension
+
+try:
+    scoreMatrix = Utils.importScoreMatrix(matrix_filename)
+    inputString = Utils.importString(string_filename)
+except FileNotFoundError:
+    print("Error: inputs not found")
+    exit()
+
+try:
+    database = Utils.importDatabase(database_filename)
+except FileNotFoundError:
+    print("Error: database not found")
+    exit()
+
+print("\nReading data from " + database_filename)
+print("\nFinding best alignment...")
 
 results = globalPairwiseAlignmentAlgorithm(scoreMatrix, database, inputString)
 
-print("\nBest alignment found:")
-print(results.bestString)
-print("Score: " + str(results.score))
-print("Shift value: " + str(results.shiftValue))
-
 print("\nTested " + str(results.metrics.iterations) + " sequences with " + str(results.metrics.alignmentsTested) + " alignments in total")
-print("Solution improved " + str(results.metrics.improvements) + " times")
 
-print("\nBest sequence alignment time: " + str(round(results.metrics.bestAlignmentTime, 3)) + " seconds")
+print("\nBest sequence found:")
+print(results.bestString)
+print("Shift value: " + str(results.shiftValue))
+print("Score: " + str(results.score))
+
+print("\nSequence alignment time: " + str(round(results.metrics.bestAlignmentTime, 3)) + " seconds")
 print("Total algorithm time: " + str(round(results.metrics.totalTime, 3)) + " seconds")
+
+Utils.printResults(output_filename, database_filename, matrix_filename, string_filename, results)
