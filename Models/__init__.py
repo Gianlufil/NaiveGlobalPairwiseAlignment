@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-__author__ = 'gianlucafilippone'
-
-import Utils;
-
 class ScoreMatrix:
 
     def __init__(self, matrix, symbolsMap):
@@ -44,3 +40,23 @@ class DatabaseIterator:
 
     def hasNext(self):
         return self.watchingIndex < self.database.size
+
+
+class AlignmentAlgoResult:
+
+    def __init__(self, inputString, bestString, shiftValue, score, metrics):
+        self.inputString = inputString
+        self.bestString = bestString
+        self.shiftValue = shiftValue
+        self.score = score
+        self.metrics = metrics
+
+
+class AlgorithmMetrics:
+
+    def __init__(self, bestAlignmentTime, totalTime, alignmentsTested, improvements, iterations):
+        self.bestAlignmentTime = bestAlignmentTime
+        self.totalTime = totalTime
+        self.alignmentsTested = alignmentsTested
+        self.improvements = improvements
+        self.iterations = iterations

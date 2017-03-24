@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__author__ = 'gianlucafilippone'
-
-import Models;
+import Models
 
 def importScoreMatrix(filename):
 
