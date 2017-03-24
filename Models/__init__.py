@@ -15,9 +15,6 @@ class ScoreMatrix:
         colIndex = self.symbolsMap[onCol]
         return self.matrix[rowIndex][colIndex]
 
-    def importScoreMatrix(filename):
-        return Utils.importScoreMatrix(filename)
-
 
 class Database:
 
@@ -30,9 +27,6 @@ class Database:
             return False
         else:
             return self.strings[index]
-
-    def initDatabase(filename):
-        return Utils.importDatabase(filename)
 
     def iterator(self):
         return DatabaseIterator(self)

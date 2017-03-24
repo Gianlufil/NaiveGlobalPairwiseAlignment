@@ -24,13 +24,13 @@ def importScoreMatrix(filename):
 
     return Models.ScoreMatrix(matrix, symbolsMap)
 
-def importDatabase(filename):
 
-    # Import file
+def importDatabase(filename):
     input_file = open(filename, 'r')
     strings = input_file.read().splitlines()
     input_file.close()
     return Models.Database(strings)
+
 
 def importString(filename):
     input_file = open(filename, 'r')
