@@ -30,7 +30,7 @@ def align_strings(input_string, comparing_string, shift_value):
 
 
 def score_alignment(score_matrix, input_string, comparing_string, shift_value):
-    score = 0;
+    score = 0
 
     input_string, comparing_string = align_strings(input_string, comparing_string, shift_value)
 
