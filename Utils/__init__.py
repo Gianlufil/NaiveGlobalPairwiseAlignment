@@ -3,7 +3,8 @@
 import Models
 from datetime import datetime
 
-def importScoreMatrix(filename):
+
+def import_score_matrix(filename):
 
     input_file = open(filename, 'r')
     lines = input_file.read().splitlines()
@@ -24,20 +25,21 @@ def importScoreMatrix(filename):
     return Models.ScoreMatrix(matrix, symbolsMap)
 
 
-def importDatabase(filename):
+def import_database(filename):
     input_file = open(filename, 'r')
     strings = input_file.read().splitlines()
     input_file.close()
     return Models.Database(strings)
 
 
-def importString(filename):
+def import_input_string(filename):
     input_file = open(filename, 'r')
     string = input_file.read().splitlines().pop(0)
     input_file.close()
     return string
 
-def printResults(output_filename, database_filename, matrix_filename, string_filename, results):
+
+def print_results(output_filename, database_filename, matrix_filename, string_filename, results):
     output_file = open(output_filename, 'w')
 
     output_file.write("*****GLOBAL PAIRWISE ALIGNMENT RESULTS*****")
@@ -49,29 +51,29 @@ def printResults(output_filename, database_filename, matrix_filename, string_fil
     output_file.write("\n")
 
     output_file.write("\nTested " + str(results.metrics.iterations) + " sequences with " + str(
-        results.metrics.alignmentsTested) + " alignments in total")
+        results.metrics.alignments_tested) + " alignments in total")
     output_file.write("\n")
 
     output_file.write("\nInput String:\n")
-    output_file.write(results.inputString)
+    output_file.write(results.input_string)
 
     output_file.write("\n\nBest sequence found:\n")
-    output_file.write(results.bestString)
+    output_file.write(results.best_string)
     output_file.write("\n")
-    output_file.write("\nShift value: " + str(results.shiftValue))
+    output_file.write("\nShift value: " + str(results.shift_value))
     output_file.write("\nScore: " + str(results.score))
     output_file.write("\n")
 
     output_file.write("\nAlignment:\n")
-    if results.shiftValue < 0:
-        for i in range(-1*(results.shiftValue)):
+    if results.shift_value < 0:
+        for i in range(-1*results.shift_value):
             output_file.write(" ")
-    output_file.write(results.inputString)
+    output_file.write(results.input_string)
     output_file.write("\n")
-    if results.shiftValue > 0:
-        for i in range(results.shiftValue):
+    if results.shift_value > 0:
+        for i in range(results.shift_value):
             output_file.write(" ")
-    output_file.write(results.bestString)
+    output_file.write(results.best_string)
 
-    output_file.write("\n\nSequence alignment time: " + str(round(results.metrics.bestAlignmentTime, 3)) + " seconds")
-    output_file.write("\nTotal algorithm time: " + str(round(results.metrics.totalTime, 3)) + " seconds")
+    output_file.write("\n\nSequence alignment time: " + str(round(results.metrics.best_alignment_time, 3)) + " seconds")
+    output_file.write("\nTotal algorithm time: " + str(round(results.metrics.total_time, 3)) + " seconds")
