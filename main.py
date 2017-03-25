@@ -87,6 +87,14 @@ def global_pairwise_alignment_algorithm(score_matrix, database, input_string):
     return results
 
 
+def is_database_valid(database, score_matrix):
+    iterator = database.iterator()
+    while iterator.has_next():
+        for char in iterator.next():
+            if char not in score_matrix.symbols_map:
+                return False
+    return True
+
 #############################################
 #                 Program                   #
 #############################################
@@ -115,6 +123,11 @@ except FileNotFoundError:
     exit()
 
 print("\nReading data from " + database_filename)
+
+if not is_database_valid(database, score_matrix):
+    print("Error: the datasets are not compatible")
+    exit()
+
 print("\nFinding best alignment...")
 
 results = global_pairwise_alignment_algorithm(score_matrix, database, input_string)
