@@ -29,18 +29,18 @@ def align_strings(input_string, comparing_string, shift_value):
     return input_string, comparing_string
 
 
-def score_alignment(score_matrix, input_string, comparing_string, shift_value):
+def score_alignment(substitution_matrix, input_string, comparing_string, shift_value):
     score = 0
 
     input_string, comparing_string = align_strings(input_string, comparing_string, shift_value)
 
     for x, y in zip(input_string, comparing_string):
         if x != "\0" and y != "\0":
-            score += score_matrix.value_of_pair(x, y)
+            score += substitution_matrix.value_of_pair(x, y)
     return score
 
 
-def global_pairwise_alignment_algorithm(score_matrix, database, input_string):
+def global_pairwise_alignment_algorithm(substitution_matrix, database, input_string):
 
     algorithm_start_time = time.time()
 
@@ -64,7 +64,7 @@ def global_pairwise_alignment_algorithm(score_matrix, database, input_string):
         max_absolute_shift_value = max(len(input_string), len(comparing_string)) - 1
 
         for currentShiftValue in range((-1) * max_absolute_shift_value, max_absolute_shift_value + 1):
-            current_score = score_alignment(score_matrix, input_string, comparing_string, currentShiftValue)
+            current_score = score_alignment(substitution_matrix, input_string, comparing_string, currentShiftValue)
             alignment_tested += 1
             if current_score > best_score:
                 best_string = comparing_string
@@ -87,12 +87,19 @@ def global_pairwise_alignment_algorithm(score_matrix, database, input_string):
     return results
 
 
-def is_database_valid(database, score_matrix):
+def is_database_valid(database, substitution_matrix):
     iterator = database.iterator()
     while iterator.has_next():
         for char in iterator.next():
-            if char not in score_matrix.symbols_map:
+            if char not in substitution_matrix.symbols_map:
                 return False
+    return True
+
+
+def is_input_string_valid(input_string, substitution_matrix):
+    for char in input_string:
+        if char not in substitution_matrix.symbols_map:
+            return False
     return True
 
 #############################################
@@ -101,7 +108,7 @@ def is_database_valid(database, score_matrix):
 
 output_filename = "output.txt"
 string_filename = "datasets/input_string.txt"
-matrix_filename = "datasets/score_matrix.txt"
+matrix_filename = "datasets/substitution_matrix.txt"
 database_basename = "datasets/databases/database_"
 database_extension = ".txt"
 
@@ -110,7 +117,7 @@ size=input("Select database size: ")
 database_filename = database_basename + size + database_extension
 
 try:
-    score_matrix = Utils.import_score_matrix(matrix_filename)
+    substitution_matrix = Utils.import_substitution_matrix(matrix_filename)
     input_string = Utils.import_input_string(string_filename)
 except FileNotFoundError:
     print("Error: inputs not found")
@@ -124,13 +131,17 @@ except FileNotFoundError:
 
 print("\nReading data from " + database_filename)
 
-if not is_database_valid(database, score_matrix):
-    print("Error: the datasets are not compatible")
+if not is_database_valid(database, substitution_matrix):
+    print("Error: the datasets are not compatible with the substitution matrix")
+    exit()
+
+if not is_input_string_valid(input_string, substitution_matrix):
+    print("Error: the input string is not compatible with the substitution matrix")
     exit()
 
 print("\nFinding best alignment...")
 
-results = global_pairwise_alignment_algorithm(score_matrix, database, input_string)
+results = global_pairwise_alignment_algorithm(substitution_matrix, database, input_string)
 
 print("\nTested " + str(results.metrics.iterations) + " sequences with "
       + str(results.metrics.alignments_tested) + " alignments in total")

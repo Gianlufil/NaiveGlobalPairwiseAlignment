@@ -4,7 +4,7 @@ import Models
 from datetime import datetime
 
 
-def import_score_matrix(filename):
+def import_substitution_matrix(filename):
 
     input_file = open(filename, 'r')
     lines = input_file.read().splitlines()
@@ -46,7 +46,7 @@ def print_results(output_filename, database_filename, matrix_filename, string_fi
     output_file.write("\n(Output date: " + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ")\n")
 
     output_file.write("\nDatabase file: " + database_filename)
-    output_file.write("\nScore matrix file: " + matrix_filename)
+    output_file.write("\nSubstitution matrix file: " + matrix_filename)
     output_file.write("\nString input file: " + string_filename)
     output_file.write("\n")
 
